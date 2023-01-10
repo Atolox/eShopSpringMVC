@@ -15,16 +15,27 @@ import eshop.entity.Fournisseur;
 import eshop.entity.Produit;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
+<<<<<<< HEAD
 	
 	List<Produit> findByLibelle(String libelle); //recherche par nom de produit
 	List<Produit> findByLibelleContaining(String libelle); //recherche par
 	Page<Produit> findByLibelleContaining(String nom, Pageable pageable);
+=======
+
+	List<Produit> findByLibelle(String libelle); // recherche par nom de produit
+
+	List<Produit> findByLibelleContaining(String libelle); // recherche par
+
+	Page<Produit> findByLibelleContaining(String nom, Pageable pageable);
+	
+	List<Produit> findByFournisseur(Fournisseur fournisseur);
+>>>>>>> damien
 	
 
 	@Modifying
 	@Transactional
-	@Query("update Produit p set p.fournisseur=null where p.fournisseur=:fournisseur")
-	void updateByFournisseurSetFournisseurToNull(@Param("fournisseur") Produit fournisseur);
+	@Query("update Produit f set f.fournisseur=null where f.fournisseur=:fournisseur")
+	void updateByFournisseurSetFournisseurToNull(@Param("fournisseur") Fournisseur fournisseur);
 
 	@Modifying
 	@Transactional
