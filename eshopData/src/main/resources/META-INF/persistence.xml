@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<!-- configuration de jpa -->
+	<!-- definition de la base de donnée -->
+	<persistence-unit name="baseAltenPourJPA"
+		transaction-type="RESOURCE_LOCAL">
+		<!-- provider=>implementation de JPA à utiliser -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		
+		<!-- configuration acces à la base -->
+		<!-- le nom de proprites depend de l'implementation choisie (Hibernate, OpenJPA, EclipseToolLink,....) -->
+		<properties>
+			<!-- configuration du jdbc -->
+			<property name="hibernate.connection.url" value="jdbc:postgresql://127.0.0.1:5432/altenjpa"/>
+			<property name="hibernate.connection.user" value="postgres"/>
+			<property name="hibernate.connection.password" value="postgres"/>
+			<property name="hibernate.connection.driver" value="org.postgresql.Driver"/>
+			<!-- configuration hibernate -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect"/>
+			<!-- afficher les requetes executees par hibernate (juste pour explication )-->
+			<property name="hibernate.show_sql" value="false"/>
+			<property name="hibernate.format_sql" value="true"/>
+			<!-- none, 
+				validate:on verifie la coherance entre les entites et les tables 
+				create:on drop les tables associees aux entites si elle existe, on cree les tables-->
+			<property name="hibernate.hbm2ddl.auto" value="validate"/>
+		</properties>
+	</persistence-unit>
+</persistence>
