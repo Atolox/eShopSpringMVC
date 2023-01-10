@@ -20,24 +20,20 @@ public class FournisseurService {
 	@Autowired
 	private FournisseurRepository fournisseurRepo;
 	
-	//Besoin repository Damien
 	@Autowired
 	private ProduitRepository produitRepo;
 
 	//OK
 	public Fournisseur create(Fournisseur fournisseur) {
 		checkFournisseurIsNotNull(fournisseur);
-//			if (fournisseur.getcontact() == null || fournisseur.getContact().isEmpty()) {
-//				throw new FournisseurException("prenom vide");
-//			}
-//			if (fournisseur.getNom() == null || fournisseur.getNom().isEmpty()) {
-//				throw new FournisseurException("nom vide");
-//			}
-//			checkFournisseurNomIsNotNullOrEmpty(fournisseur);
-//			checkFournisseurContactIsNotNullOrEmpty(fournisseur);
-		// on n'a pas mis d'annotation @NotEmpty dans notre entity Fournisseur
 		return fournisseurRepo.save(fournisseur);
 	}
+	
+//	private void checkFournisseurContactIsNotNullOrEmpty(Fournisseur fournisseur) {
+//		if (fournisseur.getContact() == null) {
+//			throw new FournisseurException();
+//		}
+//	}
 
 	//OK
 	private void checkFournisseurIsNotNull(Fournisseur fournisseur) {
@@ -56,14 +52,12 @@ public class FournisseurService {
 		});
 	}
 
-	//souci ici
-	
 	public Fournisseur getByIdWithProduitsCommeFournisseur(Long id) {
 		if (id == null) {
 			throw new IdException();
 		}
-		return fournisseurRepo.findByKeyFetchProduits(id).orElseThrow(() -> {
-			throw new FournisseurException("fournisseur inconnu");
+		return fournisseurRepo.findByIdFetchProduits(id).orElseThrow(() -> {
+			throw new FournisseurException("aucun produit pour le fournisseur");
 		});
 	}
 
@@ -78,9 +72,6 @@ public class FournisseurService {
 		deleteById(id);
 	}
 
-	//Sortir list produits liée au fournisseur
-	//set fournisseur des produits à fournisseur non attribué
-	//
 	private void deleteById(Long id) {
 		Fournisseur fournisseur = getById(id);
 		produitRepo.deleteByFournisseur(fournisseur);
@@ -90,6 +81,22 @@ public class FournisseurService {
 	//OK
 	public List<Fournisseur> getAll() {
 		return fournisseurRepo.findAll();
+	}
+	
+	//OK
+	public List<Fournisseur> getByNomContaining(String nom) {
+		if (nom == null || nom.isEmpty()) {
+			throw new FournisseurException("Nom vide");
+		}
+		return fournisseurRepo.findByNomContaining(nom);
+	}
+
+	//OK
+	public List<Fournisseur> getByContactContaining(String contact) {
+		if (contact == null || contact.isEmpty()) {
+			throw new FournisseurException("Contact vide");
+		}
+		return fournisseurRepo.findByContactContaining(contact);
 	}
 
 	//OK
@@ -136,4 +143,5 @@ public class FournisseurService {
 			return fournisseurRepo.save(fournisseurEnBase);
 			// @formatter:on
 	}
+	//balancer dans un test le fournisseur id <100 qui sera le non référencé
 }

@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import eshop.entity.Fournisseur;
 import eshop.entity.Produit;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
@@ -25,4 +26,8 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
 	@Query("update Produit p set p.fournisseur=null where p.fournisseur=:fournisseur")
 	void updateByFournisseurSetFournisseurToNull(@Param("fournisseur") Produit fournisseur);
 
+	@Modifying
+	@Transactional
+	@Query("delete Produit f where f.fournisseur=:fournisseur")
+	void deleteByFournisseur(@Param("fournisseur") Fournisseur fournisseur);
 }

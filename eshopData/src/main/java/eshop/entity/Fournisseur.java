@@ -7,11 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+
+import eshop.jsonviews.Views;
 
 @Entity
 @Table(name = "supplier")
@@ -25,10 +26,12 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @SequenceGenerator(name = "seqCompte", sequenceName = "supplier_id_seq", initialValue = 100, allocationSize = 1)
 public class Fournisseur extends Compte {
 	@Column(name = "contact")
+	@NotEmpty
+	@JsonView(Views.Common.class)
 	private String contact;
 	// @OneToOne(mappedBy = "fournisseur")
 	// private Produit produit;
-	@JsonIgnore
+	@JsonView(Views.FournisseurWithProduitsCommeFournisseur.class)
 	@OneToMany(mappedBy = "fournisseur",fetch = FetchType.LAZY) //LAZY par defaut sur les collections
 	//ne pas le modifier!!!!!!
 	private List<Produit> produits;
