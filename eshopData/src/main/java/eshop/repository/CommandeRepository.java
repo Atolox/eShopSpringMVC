@@ -27,4 +27,5 @@ public interface CommandeRepository extends JpaRepository<Commande, Long> {
     @Modifying
     @Transactional
     void deleteByClient(@Param("client") Client client);
+
 }
