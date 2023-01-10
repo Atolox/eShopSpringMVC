@@ -19,6 +19,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import eshop.jsonviews.Views;
+
 @Entity
 @Table(name = "orders")
 @SequenceGenerator(name = "seqCommande", sequenceName = "order_number_seq", initialValue = 50, allocationSize = 1)
@@ -28,8 +32,10 @@ public class Commande {
 	@Column(name = "order_number")
 	private Long numero;
 	@Column(name = "order_date")
+	@JsonView(Views.Common.class)
 	private LocalDate date;
 	@ManyToOne
+	@JsonView(Views.Common.class)
 	@JoinColumn(name = "order_customer_id", foreignKey = @ForeignKey(name = "order_order_customer_id_fk"))
 	private Client client;
 	// version 1 1 client achète x produit 1 fois
@@ -40,6 +46,7 @@ public class Commande {
 //			inverseJoinColumns = @JoinColumn(name="order_details_product_id",foreignKey = @ForeignKey(name="order_details_product_id")))
 //	private Set<Produit> achats;
 
+	@JsonView(Views.CommandeWithAchats.class)
 	@OneToMany(mappedBy = "id.commande")
 	private List<Achat> achats;
 

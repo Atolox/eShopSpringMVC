@@ -8,4 +8,8 @@ public class Views {
 	public static class FournisseurWithProduitsCommeFournisseur extends Common {
 
 	}
+	
+	public static class CommandeWithAchats extends Common{
+		
+	}
 }

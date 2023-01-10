@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import eshop.entity.Client;
 import eshop.entity.Commande;
+import eshop.entity.Fournisseur;
 import eshop.exception.CommandeException;
+import eshop.exception.FournisseurException;
 import eshop.exception.IdException;
 import eshop.repository.AchatRepository;
 import eshop.repository.CommandeRepository;
@@ -43,6 +45,15 @@ public class CommandeService {
 		}
 		return commandeRepository.findById(id).orElseThrow(() -> {
 			throw new CommandeException("commande inconnu");
+		});
+	}
+	
+	public Commande getByIdWithAchats(Long id) {
+		if (id == null) {
+			throw new IdException();
+		}
+		return commandeRepository.findByIdFetchAchats(id).orElseThrow(() -> {
+			throw new FournisseurException("aucun achat pour la commande");
 		});
 	}
 
