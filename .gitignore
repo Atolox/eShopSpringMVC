@@ -9,3 +9,11 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+#ide eclispe
+.classpath
+.project
+.settings/
+#maven
+target/
+#macOS
+.DS_Store
