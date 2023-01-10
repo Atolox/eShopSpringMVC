@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,6 +32,7 @@ public class Produit {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqProduit")
 	@Column(name = "product_id")
 	private Long id;
+	@NotEmpty
 	@Column(name = "product_name", nullable = false)
 	private String libelle;
 	@Column(name = "product_description")
@@ -40,6 +43,7 @@ public class Produit {
 				// contrainte de type forgein key
 	@ManyToOne(fetch = FetchType.EAGER)//charger tout le temps EAGER par defaut pour @XXXToOne
 	@JoinColumn(name = "product_supplier_id", foreignKey = @ForeignKey(name = "fk_product_product_supplier_id"))
+	@NotNull
 	private Fournisseur fournisseur;
 //	@ManyToMany(mappedBy = "achats")
 //	private Set<Commande> achats;
