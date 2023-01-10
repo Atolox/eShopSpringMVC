@@ -15,13 +15,6 @@ import eshop.entity.Fournisseur;
 import eshop.entity.Produit;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
-<<<<<<< HEAD
-	
-	List<Produit> findByLibelle(String libelle); //recherche par nom de produit
-	List<Produit> findByLibelleContaining(String libelle); //recherche par
-	Page<Produit> findByLibelleContaining(String nom, Pageable pageable);
-=======
-
 	List<Produit> findByLibelle(String libelle); // recherche par nom de produit
 
 	List<Produit> findByLibelleContaining(String libelle); // recherche par
@@ -29,7 +22,7 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
 	Page<Produit> findByLibelleContaining(String nom, Pageable pageable);
 	
 	List<Produit> findByFournisseur(Fournisseur fournisseur);
->>>>>>> damien
+
 	
 
 	@Modifying
