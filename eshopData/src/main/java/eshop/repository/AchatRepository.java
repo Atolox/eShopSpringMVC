@@ -16,6 +16,5 @@ public interface AchatRepository extends JpaRepository<Achat, Long> {
 	@Modifying
 	@Transactional
 	void deleteByCommande(@Param("commande") Achat commande);
-	
-	
+
 }

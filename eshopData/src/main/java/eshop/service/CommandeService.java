@@ -60,5 +60,10 @@ public class CommandeService {
 		}
 		return commandeRepository.findAll(page.previousOrFirstPageable());
 	}
-
+// deletebyId
+	
+//delete
+	
+//update
+	
 }

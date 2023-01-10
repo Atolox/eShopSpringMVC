@@ -22,19 +22,19 @@ public class FournisseurService {
 	
 	//Besoin repository Damien
 	@Autowired
-	private ProduitRepository formationRepo;
+	private ProduitRepository produitRepo;
 
 	//OK
 	public Fournisseur create(Fournisseur fournisseur) {
 		checkFournisseurIsNotNull(fournisseur);
-//			if (fournisseur.getPrenom() == null || fournisseur.getPrenom().isEmpty()) {
+//			if (fournisseur.getcontact() == null || fournisseur.getContact().isEmpty()) {
 //				throw new FournisseurException("prenom vide");
 //			}
 //			if (fournisseur.getNom() == null || fournisseur.getNom().isEmpty()) {
 //				throw new FournisseurException("nom vide");
 //			}
 //			checkFournisseurNomIsNotNullOrEmpty(fournisseur);
-//			checkFournisseurPrenomIsNotNullOrEmpty(fournisseur);
+//			checkFournisseurContactIsNotNullOrEmpty(fournisseur);
 		// on n'a pas mis d'annotation @NotEmpty dans notre entity Fournisseur
 		return fournisseurRepo.save(fournisseur);
 	}
@@ -57,11 +57,12 @@ public class FournisseurService {
 	}
 
 	//souci ici
+	
 	public Fournisseur getByIdWithProduitsCommeFournisseur(Long id) {
 		if (id == null) {
 			throw new IdException();
 		}
-		return fournisseurRepo.findByKeyFetchProduits(key).orElseThrow(() -> {
+		return fournisseurRepo.findByKeyFetchProduits(id).orElseThrow(() -> {
 			throw new FournisseurException("fournisseur inconnu");
 		});
 	}
@@ -77,7 +78,9 @@ public class FournisseurService {
 		deleteById(id);
 	}
 
-	//souci
+	//Sortir list produits liée au fournisseur
+	//set fournisseur des produits à fournisseur non attribué
+	//
 	private void deleteById(Long id) {
 		Fournisseur fournisseur = getById(id);
 		produitRepo.deleteByFournisseur(fournisseur);

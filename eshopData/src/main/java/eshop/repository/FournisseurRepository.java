@@ -34,7 +34,6 @@ public interface FournisseurRepository extends JpaRepository<Fournisseur, Long> 
 	// remonter page avec des noms contenant
 	Page<Fournisseur> findByNomContaining(String nom, Pageable pageable);
 
-	// souci
-	@Query("select f from Fournisseur f left join fetch f.product where f.id =:id")
+	@Query("select f from Fournisseur f left join fetch f.produits where f.id =:id")
 	Optional<Fournisseur> findByKeyFetchProduits(@Param("id") Long id);
 }
