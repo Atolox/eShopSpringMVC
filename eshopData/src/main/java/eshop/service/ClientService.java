@@ -1,5 +1,6 @@
 package eshop.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,27 +10,45 @@ import org.springframework.stereotype.Service;
 
 import eshop.entity.Adresse;
 import eshop.entity.Client;
+import eshop.entity.Commande;
 import eshop.exception.ClientException;
 import eshop.exception.IdException;
+import eshop.repository.AchatRepository;
 import eshop.repository.ClientRepository;
+import eshop.repository.CommandeRepository;
 
 @Service
 public class ClientService {
 
 	@Autowired
 	private ClientRepository clientRepo;
+	
+	@Autowired 
+	private CommandeRepository commandeRepo;
+	
+	@Autowired 
+	private AchatRepository achatRepo;
 
 	
 	// Create
 	public Client create(Client client) {
 		checkClientIsNotNull(client);
+		if (client.getNom() == null || client.getNom().isEmpty()) {
+			throw new ClientException("Nom manquant");
+		}
+		if (client.getPrenom() == null || client.getPrenom().isEmpty()) {
+			throw new ClientException("Prénom manquant");
+		}
+		if (client.getEmail() == null || client.getEmail().isEmpty()) {
+			throw new ClientException("Mail manquant");
+		}
 		return clientRepo.save(client);
 	}
 	
 	// Check client not null
 	private void checkClientIsNotNull(Client client) {
 		if (client == null) {
-			throw new ClientException("client null");
+			throw new ClientException("Pas de client trouvé");
 		}
 	}
 	
@@ -39,7 +58,7 @@ public class ClientService {
 			throw new IdException();
 		}
 		return clientRepo.findById(id).orElseThrow(() -> {
-			throw new ClientException("client inconnu");
+			throw new ClientException("Pas de client trouvé");
 		});
 	}
 	
@@ -49,7 +68,7 @@ public class ClientService {
 			throw new IdException();
 		}
 		return clientRepo.findByIdFetchCommandes(id).orElseThrow(() -> {
-			throw new ClientException("client inconnu");
+			throw new ClientException("Pas de client trouvé");
 		});
 	}
 	
@@ -63,14 +82,41 @@ public class ClientService {
 		deleteById(id);
 	}
 	
-	// Delete by ID
+	// Delete by ID et commandes en cascade
+	// TODO : suppression des achats en cascade des commandes
 	private void deleteById(Long id) {
 		Client client = getById(id);
-		// TODO : Ajout de la méthode deleteByClient de CommandeService
+//		clientRepo.findByIdFetchCommandes(id).stream().forEach(c -> {
+//			achatRepo.deleteByCommande();
+//		});
+		commandeRepo.deleteByClient(client);
 		clientRepo.delete(client);
 	}
 	
-	//TODO les recherches par nom et mail
+	// Recherche par nom 
+	public List<Client> getByNom (String nom) {
+		if (nom == null || nom.isEmpty()) {
+			throw new ClientException("Nom nécessaire pour recherche");
+		}
+		return clientRepo.findByNom(nom);
+	}
+	
+	// Recherche par nom partielle
+	public List<Client> getByNomCont (String nom) {
+		if (nom == null || nom.isEmpty()) {
+			throw new ClientException("Nom nécessaire pour recherche");
+		}
+		return clientRepo.findByNomContaining(nom);
+	}
+	
+	
+	// Recherche par mail
+	public List<Client> getByEmail (String email) {
+		if (email == null || email.isEmpty()) {
+			throw new ClientException("Email nécessaire pour recherche");
+		}
+		return clientRepo.findByEmail(email);
+	}
 	
 	// Liste des clients par liste
 	public List<Client> getAll() {
@@ -105,11 +151,11 @@ public class ClientService {
 	public Client update(Client client) {
 		// @formatter:off
 			Client clientEnBase = getById(client.getId());
-			clientEnBase.setPrenom(client.getPrenom() != null||client.getPrenom().isEmpty() ? clientEnBase.getPrenom() : client.getPrenom());
-			clientEnBase.setNom(client.getNom() != null||client.getNom().isEmpty()? clientEnBase.getNom() : client.getNom());
-			clientEnBase.setEmail(client.getEmail());
-			clientEnBase.setCivilite(client.getCivilite() != null ? clientEnBase.getCivilite() : client.getCivilite());
-			clientEnBase.setDateInscription(client.getDateInscription() != null ? clientEnBase.getDateInscription() : client.getDateInscription());
+			clientEnBase.setPrenom(client.getPrenom() == null||client.getPrenom().isEmpty() ? clientEnBase.getPrenom() : client.getPrenom());
+			clientEnBase.setNom(client.getNom() == null||client.getNom().isEmpty()? clientEnBase.getNom() : client.getNom());
+			clientEnBase.setEmail(client.getEmail() == null || client.getEmail().isEmpty()? clientEnBase.getEmail() : client.getEmail());
+			clientEnBase.setCivilite(client.getCivilite() == null ? clientEnBase.getCivilite() : client.getCivilite());
+			clientEnBase.setDateInscription(client.getDateInscription() == null ? clientEnBase.getDateInscription() : client.getDateInscription());
 			if (client.getAdresse() != null) {
 				clientEnBase.setAdresse(
 									new Adresse(

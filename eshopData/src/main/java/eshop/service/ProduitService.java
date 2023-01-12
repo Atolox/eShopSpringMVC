@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import eshop.entity.Fournisseur;
 import eshop.entity.Produit;
 import eshop.exception.IdException;
 import eshop.exception.ProduitException;
@@ -17,8 +18,13 @@ public class ProduitService {
 
 	@Autowired
 	private ProduitRepository produitRepo;
+	
 	@Autowired
 	private FournisseurService fournisseurService;
+	
+	
+	
+	
 
 	// creation d'un produit
 	public Produit create(Produit produit) {
@@ -57,17 +63,22 @@ public class ProduitService {
 	}
 
 	// Recherche par libelle
-	public Produit getByLibelle(String libelle) {
+	public List<Produit> getByLibelle(String libelle) {
 		if (libelle == null) {
-			throw new ProduitException();
+			throw new ProduitException("produit inconnu");
 		}
-		return produitRepo.findByLibelle(libelle).orElseThrow(() -> {
-			throw new ProduitException("libelle inconnu");
-		});
+		return produitRepo.findByLibelleContaining(libelle);
+		
 	}
 
 	// Recherche par fournisseur
-	//
+	public List<Produit> getByFournisseur(Fournisseur fournisseur) {
+		if (fournisseur == null) {
+			throw new ProduitException("fournisseur inconnu");
+		}
+		return produitRepo.findByFournisseur(fournisseur);
+    }
+	
 
 	// Delete
 
@@ -82,6 +93,7 @@ public class ProduitService {
 
 	private void deleteById(Long id) {
 		Produit produit = getById(id);
+		
 		produitRepo.delete(produit);
 	}
 

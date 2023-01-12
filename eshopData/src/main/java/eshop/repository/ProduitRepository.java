@@ -15,6 +15,17 @@ import eshop.entity.Fournisseur;
 import eshop.entity.Produit;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
+	
+	@Autowired
+	private ProduitRepository produitRepo;
+	
+	@Test
+	void requetePerso() {
+		produitRepo.findByLibelleContaining("c");
+		
+		
+	}
+	
 	List<Produit> findByLibelle(String libelle); // recherche par nom de produit
 
 	List<Produit> findByLibelleContaining(String libelle); // recherche par
