@@ -12,4 +12,8 @@ public class Views {
 	public static class CommandeWithAchats extends Common{
 		
 	}
+	
+	public static class ListeCommandesClient extends Common{
+		
+	}
 }

@@ -12,25 +12,38 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+import eshop.jsonviews.Views;
+import eshop.jsonviews.Views.ListeCommandesClient;
+
 @Entity
 @AttributeOverride(name = "adresse.numero", column = @Column(name = "customer_number", length = 50))
 @AttributeOverride(name = "adresse.rue", column = @Column(name = "customer_street", length = 255))
 @AttributeOverride(name = "adresse.codePostal", column = @Column(name = "customer_zip_code", length = 50))
 @AttributeOverride(name = "adresse.ville", column = @Column(name = "customer_city", length = 255))
-@AttributeOverride(name="id",column = @Column(name="customer_id"))
-@AttributeOverride(name="nom",column = @Column(name="customer_last_name",length = 255))
-@AttributeOverride(name="email",column = @Column(name="customer_email",length = 255))
-@Table(name="customer")
-@SequenceGenerator(name="seqCompte",sequenceName = "customer_id_seq",initialValue = 50,allocationSize = 1)
+@AttributeOverride(name = "id", column = @Column(name = "customer_id"))
+@AttributeOverride(name = "nom", column = @Column(name = "customer_last_name", length = 255))
+@AttributeOverride(name = "email", column = @Column(name = "customer_email", length = 255))
+@Table(name = "customer")
+@SequenceGenerator(name = "seqCompte", sequenceName = "customer_id_seq", initialValue = 50, allocationSize = 1)
 public class Client extends Compte {
-	@Column(name="first_name")
+
+	@Column(name = "first_name")
+	@JsonView(Views.Common.class)
 	private String prenom;
-	@Column(name="registry")
+	
+	@Column(name = "registry")
+	@JsonView(Views.Common.class)
 	private LocalDate dateInscription;
-	@Column(name="civility",length = 5)
+	
+	@Column(name = "civility", length = 5)
 	@Enumerated(EnumType.STRING)
+	@JsonView(Views.Common.class)
 	private Civilite civilite;
+	
 	@OneToMany(mappedBy = "client")
+	@JsonView(ListeCommandesClient.class)
 	private List<Commande> commandes;
 
 	public Client() {
@@ -76,6 +89,5 @@ public class Client extends Compte {
 	public void setCommandes(List<Commande> commandes) {
 		this.commandes = commandes;
 	}
-	
-	
+
 }

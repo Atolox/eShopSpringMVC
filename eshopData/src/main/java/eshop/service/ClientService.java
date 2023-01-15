@@ -1,6 +1,5 @@
 package eshop.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,8 @@ import org.springframework.stereotype.Service;
 
 import eshop.entity.Adresse;
 import eshop.entity.Client;
-import eshop.entity.Commande;
 import eshop.exception.ClientException;
 import eshop.exception.IdException;
-import eshop.repository.AchatRepository;
 import eshop.repository.ClientRepository;
 import eshop.repository.CommandeRepository;
 
@@ -26,8 +23,9 @@ public class ClientService {
 	@Autowired 
 	private CommandeRepository commandeRepo;
 	
-	@Autowired 
-	private AchatRepository achatRepo;
+	// A Activer pour la suppression en cascade des achats avec les commandes.
+//	@Autowired 
+//	private AchatRepository achatRepo;
 
 	
 	// Create

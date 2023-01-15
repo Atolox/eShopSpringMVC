@@ -11,14 +11,15 @@ import eshop.entity.Achat;
 import eshop.entity.Commande;
 import eshop.entity.Produit;
 
-public interface AchatRepository extends JpaRepository <Achat, Long> {
+public interface AchatRepository extends JpaRepository<Achat, Long> {
 
-	//Changement des produits en non repertorié dans les achats
-	@Modifying
-	@Transactional
-	@Query("update AchatKey a set a.id.produit=100 where a.id.produit=:produit")
-	void updateByAchatKeySetAchatKeytoNR(@Param("produit")Produit produit);
-	
+// TODO : Débugger cette fonction
+//	Changement des produits en non repertorié dans les achats
+//	@Modifying
+//	@Transactional
+//	@Query("update AchatKey a set a.id.produit=100 where a.id.produit=:produit")
+//	void updateByAchatKeySetAchatKeytoNR(@Param("produit")Produit produit);
+
 	// Suppression de tous les achats d'une commande
 	@Query("delete Achat a where a.id.commande=:commande")
 	@Modifying

@@ -48,7 +48,7 @@ public class JpaConfig {
         emf.setPackagesToScan("eshop.entity");
         emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create");
+        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL10Dialect");
         properties.setProperty("hibernate.format_sql", "true");
         properties.setProperty("hibernate.show_sql", "false");
